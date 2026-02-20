@@ -1,65 +1,84 @@
-import Image from "next/image";
+// app/changelog/page.tsx
+import { Metadata } from 'next';
+import { getChangelogs } from '@/lib/markdown';
+import { ChangelogCard } from '@/components/ChangelogCard';
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: 'Changelog | AI Directory',
+  description: 'Pembaruan harian, perilisan model terbaru, dan inovasi di dunia Artificial Intelligence.',
+};
+
+export default function ChangelogPage() {
+  const changelogs = getChangelogs();
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <main className="min-h-screen bg-white dark:bg-zinc-950">
+      <div className="mx-auto max-w-3xl px-6 py-20 sm:py-32">
+        
+        {/* Page Header */}
+        <header className="mb-16 max-w-2xl">
+          <h1 className="text-3xl font-semibold tracking-tighter text-zinc-900 dark:text-zinc-50 sm:text-4xl">
+            Changelog AI
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="mt-4 text-base tracking-tight text-zinc-600 dark:text-zinc-400">
+            Pembaruan terbaru dari ekosistem AI. Melacak perilisan model, tools baru, 
+            dan perkembangan industri hari demi hari.
           </p>
+        </header>
+
+        {/* Timeline Layout */}
+        <div className="relative">
+          
+          {/* Vertical Timeline Line with Fade Gradients */}
+          {/* Fades to transparent at the top and bottom for a seamless look */}
+          <div 
+            className="absolute bottom-0 left-[11px] top-0 w-px bg-zinc-200 dark:bg-white/10"
+            style={{
+              maskImage: 'linear-gradient(to bottom, transparent, black 5%, black 95%, transparent)',
+              WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 5%, black 95%, transparent)'
+            }}
+            aria-hidden="true"
+          />
+
+          {/* Render Changelog Items */}
+          <div className="flex flex-col gap-12">
+            {changelogs.length === 0 ? (
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 pl-10">
+                Belum ada catatan changelog.
+              </p>
+            ) : (
+              changelogs.map((post) => (
+                <div key={post.slug} className="relative pl-10 sm:pl-12">
+                  
+                  {/* Glowing Timeline Node (Dot) */}
+                  {/* ring-4 creates the cut-out effect against the vertical line */}
+                  <div 
+                    className="absolute left-2 top-6 h-2 w-2 rounded-full border border-zinc-400 bg-white ring-4 ring-white dark:border-white/30 dark:bg-zinc-800 dark:ring-zinc-950 dark:shadow-[0_0_8px_rgba(255,255,255,0.15)]"
+                    aria-hidden="true"
+                  />
+
+                  {/* Render the Card passing the post data */}
+                  <div className="group/item">
+                    <ChangelogCard 
+                      post={{
+                        slug: post.slug,
+                        title: post.title,
+                        date: post.date,
+                        category: post.category,
+                        impact: post.impact,
+                        source_url: post.source_url,
+                        tags: post.tags,
+                      }} 
+                    />
+                  </div>
+
+                </div>
+              ))
+            )}
+          </div>
+          
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }
