@@ -7,19 +7,19 @@ export function Header() {
   const pathname = usePathname();
 
   const navItems = [
-    { name: 'Changelog', href: '/changelog' },
-    { name: 'Directory', href: '/direktori' },
+    { name: 'Timeline AI', href: '/changelog' },
+    { name: 'Directory AI', href: '/directory' },
     { name: 'Contact', href: '/contact' },
   ];
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-zinc-200/50 bg-white/80 backdrop-blur-md transition-colors duration-300 dark:border-white/[0.08] dark:bg-zinc-950/80">
       {/* We use max-w-5xl to keep the header nicely contained, or you can use w-full depending on your overall layout preference */}
-      <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-6 lg:px-8">
-        
+      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-6 lg:px-8">
+
         {/* Left: Logo */}
-        <Link 
-          href="/" 
+        <Link
+          href="/"
           className="group flex items-center gap-2 focus:outline-none"
         >
           {/* Subtle logo icon (optional, gives that premium tech feel) */}
@@ -44,23 +44,22 @@ export function Header() {
           {navItems.map((item) => {
             // Check if current path starts with the href (so /direktori/tools still highlights Directory)
             const isActive = pathname.startsWith(item.href);
-            
+
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`text-[13px] font-medium tracking-tight transition-colors duration-200 focus:outline-none ${
-                  isActive
-                    ? 'text-zinc-900 dark:text-zinc-50'
-                    : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50'
-                }`}
+                className={`text-[13px] font-bold tracking-tight transition-colors duration-200 focus:outline-none ${isActive
+                  ? 'text-zinc-900 dark:text-zinc-50'
+                  : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50'
+                  }`}
               >
                 {item.name}
               </Link>
             );
           })}
         </nav>
-        
+
       </div>
     </header>
   );
